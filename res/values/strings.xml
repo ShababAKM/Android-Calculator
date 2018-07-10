@@ -22,7 +22,7 @@
     <string name="btnM">-</string>
     <string name="btnMu">*</string>
     <string name="btnDi">/</string>
-    <string name="btnPe">%</string>
+    <string name="btnPr">%</string>
 	<string name="btnH">History</string>
 	<string name="btnBs">Del</string>
 </resources>

@@ -14,43 +14,48 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int B0=0x7f05001e;
-        public static final int B1=0x7f050018;
-        public static final int B2=0x7f050019;
-        public static final int B3=0x7f05001a;
-        public static final int B4=0x7f050013;
-        public static final int B5=0x7f050014;
-        public static final int B6=0x7f050015;
-        public static final int B7=0x7f05000e;
-        public static final int B8=0x7f05000f;
-        public static final int B9=0x7f050010;
-        public static final int BH=0x7f050003;
-        public static final int Bc=0x7f050006;
-        public static final int Bd=0x7f050011;
-        public static final int Bdo=0x7f05001d;
-        public static final int Beq=0x7f05001f;
-        public static final int Bm=0x7f050020;
-        public static final int Bmc=0x7f05000b;
-        public static final int Bmm=0x7f050009;
-        public static final int Bmp=0x7f050005;
-        public static final int Bmr=0x7f05000a;
-        public static final int Bmu=0x7f050016;
-        public static final int Bp=0x7f05001b;
-        public static final int Bpe=0x7f05000c;
-        public static final int Bs=0x7f050007;
-        public static final int scr=0x7f050001;
-        public static final int tableRow1=0x7f050002;
-        public static final int tableRow2=0x7f050004;
-        public static final int tableRow3=0x7f050008;
-        public static final int tableRow4=0x7f05000d;
-        public static final int tableRow5=0x7f050012;
-        public static final int tableRow6=0x7f050017;
-        public static final int tableRow7=0x7f05001c;
-        public static final int textView1=0x7f050000;
+        public static final int B0=0x7f050008;
+        public static final int B1=0x7f050003;
+        public static final int B2=0x7f050007;
+        public static final int B3=0x7f05000b;
+        public static final int B4=0x7f050002;
+        public static final int B5=0x7f050006;
+        public static final int B6=0x7f05000a;
+        public static final int B7=0x7f050001;
+        public static final int B8=0x7f050005;
+        public static final int B9=0x7f050009;
+        public static final int BBs=0x7f050011;
+        public static final int BH=0x7f050018;
+        public static final int Bc=0x7f05001c;
+        public static final int Bd=0x7f050010;
+        public static final int Bdo=0x7f050004;
+        public static final int Beq=0x7f05000c;
+        public static final int Blc=0x7f050012;
+        public static final int Bm=0x7f05000e;
+        public static final int Bmc=0x7f050017;
+        public static final int Bmm=0x7f050015;
+        public static final int Bmp=0x7f050014;
+        public static final int Bmr=0x7f050016;
+        public static final int Bmu=0x7f05000f;
+        public static final int Bp=0x7f05000d;
+        public static final int Bpr=0x7f050013;
+        public static final int Bs=0x7f05001d;
+        public static final int button1=0x7f050024;
+        public static final int lscr=0x7f050000;
+        public static final int scr=0x7f050019;
+        public static final int tableRow1=0x7f05001a;
+        public static final int tableRow2=0x7f05001b;
+        public static final int tableRow3=0x7f05001e;
+        public static final int tableRow4=0x7f05001f;
+        public static final int tableRow5=0x7f050020;
+        public static final int tableRow6=0x7f050021;
+        public static final int tableRow7=0x7f050022;
+        public static final int textView1=0x7f050023;
     }
     public static final class layout {
         public static final int landscape=0x7f030000;
         public static final int main=0x7f030001;
+        public static final int phistory=0x7f030002;
     }
     public static final class string {
         public static final int app_name=0x7f040000;
@@ -76,7 +81,7 @@ public final class R {
         public static final int btnMr=0x7f040010;
         public static final int btnMu=0x7f040014;
         public static final int btnP=0x7f040012;
-        public static final int btnPe=0x7f040016;
+        public static final int btnPr=0x7f040016;
         public static final int btnd=0x7f04000b;
     }
 }

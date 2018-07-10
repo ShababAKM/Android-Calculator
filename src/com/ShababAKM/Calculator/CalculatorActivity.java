@@ -1,10 +1,21 @@
 package com.ShababAKM.Calculator;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.*;
+
+
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -12,10 +23,13 @@ import android.widget.Toast;
 
 public class CalculatorActivity extends Activity {
     /** Called when the activity is first created. */
-	private Button bt0,bt1,bt2,bt3,bt4,bt5,bt6,bt7,bt8,bt9,btm,btp,btmu,btd,btc,btbs,bteq,btdo,btmp,btmr,btmi;
-	private TextView tv;
+	private Button bt0,bt1,bt2,bt3,bt4,bt5,bt6,bt7,bt8,bt9,btm,btp,btmu,btd,btc,btbs,bteq,btdo,btmp,btmr,btmi,btpr,bth;
+	private Button btl0,btl1,btl2,btl3,btl4,btl5,btl6,btl7,btl8,btl9,btlm,btlp,btlmu,btld,btlc,btlbs,btleq,btldo,btlmp,btlmr,btlmi,btlpr,btlh;
+	private TextView tv,tvl;
 	private boolean flag = true,flag2 = false;
 	SharedPreferences sharedPref;
+	FileOutputStream outputStream;
+	static String ope,exp;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -29,6 +43,7 @@ public class CalculatorActivity extends Activity {
         {
         	setContentView(R.layout.landscape);
         }
+        
         bt0 = (Button)findViewById(R.id.B0);
         bt1 = (Button)findViewById(R.id.B1);
         bt2 = (Button)findViewById(R.id.B2);
@@ -49,7 +64,11 @@ public class CalculatorActivity extends Activity {
         bteq = (Button)findViewById(R.id.Beq);
         btmp = (Button)findViewById(R.id.Bmp);
         btmr = (Button)findViewById(R.id.Bmr);
+        btpr = (Button)findViewById(R.id.Bpr);
+        bth = (Button)findViewById(R.id.BH);
+
         tv = (TextView)findViewById(R.id.scr);
+        
         bt0.setOnClickListener(new View.OnClickListener() {
            public void onClick(View v)
         	{
@@ -157,6 +176,27 @@ public class CalculatorActivity extends Activity {
          		
          	}
           });
+        btpr.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v)
+         	{
+            	String str = tv.getText().toString();
+            	char c = str.charAt(str.length() - 1);
+            	if(c!='+' &&  c!='-'&& c!='*'&& c!='/')
+            	{
+            		String txt = tv.getText().toString()+ btpr.getText().toString();
+             		tv.setText(txt);
+             		//flag = true;
+             		//flag2 = false;
+            	}
+         		
+         	}
+          });
+        bth.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v)
+         	{
+            	goNext(v);
+         	}
+          });
         btd.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
          	{
@@ -216,6 +256,9 @@ public class CalculatorActivity extends Activity {
             	if(str.length()-1>0)
             	{
             		String txt = str.substring(0, str.length() - 1);
+            		
+            		if(str.charAt(str.length() - 1)=='.')
+            			flag = true;
                  	tv.setText(txt);
             	}
             	else tv.setText("0");
@@ -225,19 +268,7 @@ public class CalculatorActivity extends Activity {
         bteq.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
          	{
-            	double answer = 0;
-            	String str = tv.getText().toString();
-            	answer = calc(str);
-            	int ans;
-            	if(flag2==true)
-            		answer=answer+answer;
-            	if(answer%1==0)
-            		{
-            		ans = (int)answer;
-            		tv.setText(""+ans);
-            		}
-            	else	tv.setText(""+answer);
-            	flag2=true;
+                equal();
          	}
           });
     }
@@ -268,7 +299,7 @@ public class CalculatorActivity extends Activity {
 
 	@Override
 	protected void onStart() {
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub}
 		super.onStart();
 	}
 
@@ -282,12 +313,19 @@ public class CalculatorActivity extends Activity {
 		String txt = tv.getText().toString()+ bt.getText().toString();
 		tv.setText(txt);
 	}*/
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+	    // TODO Auto-generated method stub
+	    super.onConfigurationChanged(newConfig);
+	}
 
     public static Double calc(String expression) {
 
         if (expression.startsWith("(") && expression.endsWith(")")) {
             return calc(expression.substring(1, expression.length() - 1));
         }
+        int len = expression.length() - 1;
+        
         String[] containerArr = new String[]{expression};
         double leftVal = getNextOperand(containerArr);
         expression = containerArr[0];
@@ -297,16 +335,21 @@ public class CalculatorActivity extends Activity {
         char operator = expression.charAt(0);
         expression = expression.substring(1);
 
-        while (operator == '*' || operator == '/' || operator == '%') {
+        while (operator == '*' || operator == '/') {
             containerArr[0] = expression;
             double rightVal = getNextOperand(containerArr);
             expression = containerArr[0];
             if (operator == '*') {
                 leftVal = leftVal * rightVal;
+                ope = "*";
+                exp = ""+rightVal;
+                
             } 
-            else if(operator == "%")
+            
             else {
                 leftVal = leftVal / rightVal;
+                ope = "/";
+                exp = ""+rightVal;
             }
             if (expression.length() > 0) {
                 operator = expression.charAt(0);
@@ -315,9 +358,22 @@ public class CalculatorActivity extends Activity {
                 return leftVal;
             }
         }
+        while (operator == '%') {
+            containerArr[0] = expression;
+            expression = containerArr[0];
+            leftVal=leftVal/100;
+            if (expression.length() > 0) {
+                operator = expression.charAt(0);
+                expression = expression.substring(1);
+            } else {
+                return leftVal;
+            }
+        }
         if (operator == '+') {
+            
             return leftVal + calc(expression);
         } else {
+        	
             return leftVal - calc(expression);
         }
     }
@@ -334,7 +390,7 @@ public class CalculatorActivity extends Activity {
                 }
                 i++;
             }
-            res = calc(exp[0].substring(1, i - 1));
+            res = calc(exp[0].substring(1,i-1));
             exp[0] = exp[0].substring(i);
         } else {
             int i = 1;
@@ -371,7 +427,9 @@ public class CalculatorActivity extends Activity {
 	    	SharedPreferences.Editor editor = sharedPref.edit();
 	    	editor.putInt("memory", vi);
 	    	editor.commit();
-	    	
+    		/*OutputStreamWriter out = new OutputStreamWriter(openFileOutput("History.txt",MODE_APPEND));
+	    	out.write(v);
+	    	out.close();*/
     	}
     	catch(Exception e){}
     }
@@ -391,9 +449,9 @@ public class CalculatorActivity extends Activity {
     {
 		int memValue = readFromMemory();
     	String txt;
-		if(tv.getText().toString()=="0")
+		//if(tv.getText().toString()=="0")
 			txt = ""+memValue;
-		else	txt = tv.getText().toString()+ memValue;
+		//else	txt = tv.getText().toString()+ memValue;
 		tv.setText(txt);
     }
 	public void clear(View v)
@@ -403,4 +461,62 @@ public class CalculatorActivity extends Activity {
     	Toast.makeText(this,"cleared", Toast.LENGTH_SHORT);
 
     }
+	public void goNext(View v)
+    {		
+		String ret = "";
+		StringBuilder txt = new StringBuilder();
+        try {
+            InputStream inputStream = openFileInput("history.txt");
+             
+            if ( inputStream != null ) {
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                String receiveString = "";
+                StringBuilder stringBuilder = new StringBuilder();
+                while ( (receiveString = bufferedReader.readLine()) != null ) {
+                    stringBuilder.append(receiveString);
+                }
+                inputStream.close();
+                ret = stringBuilder.toString();
+            }
+        }
+        catch (FileNotFoundException e) {
+        	e.printStackTrace();
+        } catch (IOException e) {
+        	e.printStackTrace();
+        }
+
+    	String s = ret;
+    	Intent in = new Intent(this, history.class);
+    	in.putExtra("displayMsg", s);
+    	startActivity(in);
+    }
+	public void equal()
+	{
+		String history;
+    	double answer = 0;
+    	String str = tv.getText().toString();
+    	history = str;
+    	answer = calc(str);
+    	int ans;
+    	if(flag2==true)
+    		answer=answer+answer;
+    	if(answer%1==0)
+    		{
+    		ans = (int)answer;
+    		tv.setText(""+ans);
+    		}
+    	else	tv.setText(""+answer);
+    	history = history+" = "+answer;
+    	flag2=true;
+    	try {
+    	    outputStream = openFileOutput("history.txt", Context.MODE_APPEND);
+    	    outputStream.write(history.getBytes());
+    	    outputStream.close();
+    	} catch (Exception e) {
+    	    e.printStackTrace();
+    	}
+    	
+    	
+	}
 }
