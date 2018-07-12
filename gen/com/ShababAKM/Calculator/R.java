@@ -24,13 +24,11 @@ public final class R {
         public static final int B7=0x7f050001;
         public static final int B8=0x7f050005;
         public static final int B9=0x7f050009;
-        public static final int BBs=0x7f050011;
         public static final int BH=0x7f050018;
-        public static final int Bc=0x7f05001c;
+        public static final int Bc=0x7f050012;
         public static final int Bd=0x7f050010;
         public static final int Bdo=0x7f050004;
         public static final int Beq=0x7f05000c;
-        public static final int Blc=0x7f050012;
         public static final int Bm=0x7f05000e;
         public static final int Bmc=0x7f050017;
         public static final int Bmm=0x7f050015;
@@ -39,18 +37,17 @@ public final class R {
         public static final int Bmu=0x7f05000f;
         public static final int Bp=0x7f05000d;
         public static final int Bpr=0x7f050013;
-        public static final int Bs=0x7f05001d;
-        public static final int button1=0x7f050024;
-        public static final int lscr=0x7f050000;
-        public static final int scr=0x7f050019;
-        public static final int tableRow1=0x7f05001a;
-        public static final int tableRow2=0x7f05001b;
-        public static final int tableRow3=0x7f05001e;
-        public static final int tableRow4=0x7f05001f;
-        public static final int tableRow5=0x7f050020;
-        public static final int tableRow6=0x7f050021;
-        public static final int tableRow7=0x7f050022;
-        public static final int textView1=0x7f050023;
+        public static final int Bs=0x7f050011;
+        public static final int button1=0x7f050021;
+        public static final int scr=0x7f050000;
+        public static final int tableRow1=0x7f050019;
+        public static final int tableRow2=0x7f05001a;
+        public static final int tableRow3=0x7f05001b;
+        public static final int tableRow4=0x7f05001c;
+        public static final int tableRow5=0x7f05001d;
+        public static final int tableRow6=0x7f05001e;
+        public static final int tableRow7=0x7f05001f;
+        public static final int textView1=0x7f050020;
     }
     public static final class layout {
         public static final int landscape=0x7f030000;

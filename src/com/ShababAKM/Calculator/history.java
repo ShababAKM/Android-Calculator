@@ -22,7 +22,7 @@ public class history extends Activity {
 		back = (Button) findViewById(R.id.button1);
 		tv.setMovementMethod(new ScrollingMovementMethod());
 		in= getIntent();
-		s = in.getStringExtra("displayMsg");
+		s = in.getStringExtra("Intent");
 		tv.setText(s);
 	}
 	

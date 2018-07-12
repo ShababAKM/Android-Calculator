@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -23,13 +24,12 @@ import android.widget.Toast;
 
 public class CalculatorActivity extends Activity {
     /** Called when the activity is first created. */
-	private Button bt0,bt1,bt2,bt3,bt4,bt5,bt6,bt7,bt8,bt9,btm,btp,btmu,btd,btc,btbs,bteq,btdo,btmp,btmr,btmi,btpr,bth;
-	private Button btl0,btl1,btl2,btl3,btl4,btl5,btl6,btl7,btl8,btl9,btlm,btlp,btlmu,btld,btlc,btlbs,btleq,btldo,btlmp,btlmr,btlmi,btlpr,btlh;
+	private Button bt0,bt1,bt2,bt3,bt4,bt5,bt6,bt7,bt8,bt9,btm,btp,btmu,btd,btc,btbs,bteq,btdo,btmp,btmr,btmc,btmi,btpr,bth,btmm;
 	private TextView tv,tvl;
-	private boolean flag = true,flag2 = false;
+	private boolean flag = true,flag2 = false,flag3=true,flag4;
 	SharedPreferences sharedPref;
 	FileOutputStream outputStream;
-	static String ope,exp;
+	static String ope,exp,str;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,6 +37,7 @@ public class CalculatorActivity extends Activity {
         //setContentView(R.layout.main);
         if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
         {
+        
         	setContentView(R.layout.main);
         }
         else if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
@@ -64,11 +65,13 @@ public class CalculatorActivity extends Activity {
         bteq = (Button)findViewById(R.id.Beq);
         btmp = (Button)findViewById(R.id.Bmp);
         btmr = (Button)findViewById(R.id.Bmr);
+        btmc = (Button)findViewById(R.id.Bmc);
         btpr = (Button)findViewById(R.id.Bpr);
+        btmm = (Button)findViewById(R.id.Bmm);
         bth = (Button)findViewById(R.id.BH);
 
         tv = (TextView)findViewById(R.id.scr);
-        
+        tv.setText("0");
         bt0.setOnClickListener(new View.OnClickListener() {
            public void onClick(View v)
         	{
@@ -126,24 +129,27 @@ public class CalculatorActivity extends Activity {
         bt9.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
          	{
-            	number(bt8.getText().toString());
+            	number(bt9.getText().toString());
          	}
           });
         btp.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
          	{
             	String str = tv.getText().toString();
+            	String txt;
             	if(str!=null)
             	{
             		char c = str.charAt(str.length() - 1);
                 	if(c!='+' &&  c!='-'&& c!='*'&& c!='/')
                 	{
-                		String txt = tv.getText().toString()+ btp.getText().toString();
+                		txt = tv.getText().toString()+ btp.getText().toString();
                  		tv.setText(txt);
                  		flag = true;
                  		flag2 = false;
                 	}
             	}
+            	flag3=true;
+            	
          	}
           });
         btm.setOnClickListener(new View.OnClickListener() {
@@ -158,7 +164,7 @@ public class CalculatorActivity extends Activity {
              		flag = true;
              		flag2 = false;
             	}
-         		
+            	flag3=true;
          	}
           });
         btmu.setOnClickListener(new View.OnClickListener() {
@@ -173,7 +179,7 @@ public class CalculatorActivity extends Activity {
              		flag = true;
              		flag2 = false;
             	}
-         		
+            	flag3=true;
          	}
           });
         btpr.setOnClickListener(new View.OnClickListener() {
@@ -188,15 +194,10 @@ public class CalculatorActivity extends Activity {
              		//flag = true;
              		//flag2 = false;
             	}
-         		
+            	flag3=true;
          	}
           });
-        bth.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v)
-         	{
-            	goNext(v);
-         	}
-          });
+
         btd.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
          	{
@@ -209,12 +210,12 @@ public class CalculatorActivity extends Activity {
              		flag = true;
              		flag2 = false;
             	}
-         		
+            	flag3=true;
          	}
           });
         btdo.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
-         	{
+         	{flag3=true;
             	String str = tv.getText().toString();
             	if(flag!=false)
             	{
@@ -223,30 +224,62 @@ public class CalculatorActivity extends Activity {
              		flag = false;
              		flag2 = false;
             	}
-         		
+            	
+            	
          	}
           });
-        btc.setOnClickListener(new View.OnClickListener() {
+       
+          bth.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
          	{
-         		String txt = "0";
-         		tv.setText(txt);
+            	goNext(v);
          	}
           });
+          
         btmp.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
          	{
+            	flag4=true;
             	if(tv.getText().toString()!="0")
             		writeInMemory(tv.getText().toString());
             	
          	}
           });
+        
         btmr.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
          	{
             	showValue(v);
          	}
           });
+        btmc.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v)
+         	{
+            	writeInMemory("0");
+         	}
+          });
+        btmm.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v)
+         	{
+            	flag4=false;
+            	if(tv.getText().toString()!="0")
+            		writeInMemory(tv.getText().toString());
+         	}
+          });
+        
+        bteq.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v)
+         	{
+                equal();
+         	}
+          });
+         btc.setOnClickListener(new View.OnClickListener() {
+        public void onClick(View v)
+     	{
+     		String txt = "0";
+     		tv.setText(txt);
+     	}
+      });
         btbs.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
          	{
@@ -262,13 +295,6 @@ public class CalculatorActivity extends Activity {
                  	tv.setText(txt);
             	}
             	else tv.setText("0");
-         	}
-          });
-        
-        bteq.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v)
-         	{
-                equal();
          	}
           });
     }
@@ -412,24 +438,43 @@ public class CalculatorActivity extends Activity {
     }
 	private void number(String str)
 	{
+		if(flag3==true){
 		String txt;
 		if(tv.getText().toString()=="0")
 			txt =  str;
 		else	txt = tv.getText().toString()+ str;
 		tv.setText(txt);
-		flag2 = false;
-	}
+		flag2 = false;}
+		else{
+			String txt;
+				txt =  str;
+			tv.setText(txt);
+			flag2 = false;
+			flag3=true;
+			}
+		}
+
 	public void writeInMemory(String v)
-    {
+    {int vi;
     	try{
-    		int vi = Integer.parseInt(v);
+    		if(v!="0" && flag4==true){
+    		sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+	    	int defaultValue = 0;
+	    	int memValue = sharedPref.getInt("memory", defaultValue);
+    		
+    		vi = memValue+Integer.parseInt(v);}
+    		else if(v!="0" && flag4==false){
+        		sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+    	    	int defaultValue = 0;
+    	    	int memValue = sharedPref.getInt("memory", defaultValue);
+        		
+        		vi = memValue-Integer.parseInt(v);}
+    		else vi=0;
 	    	sharedPref = this.getPreferences(Context.MODE_PRIVATE);
 	    	SharedPreferences.Editor editor = sharedPref.edit();
 	    	editor.putInt("memory", vi);
 	    	editor.commit();
-    		/*OutputStreamWriter out = new OutputStreamWriter(openFileOutput("History.txt",MODE_APPEND));
-	    	out.write(v);
-	    	out.close();*/
+	    	flag = false;
     	}
     	catch(Exception e){}
     }
@@ -453,6 +498,8 @@ public class CalculatorActivity extends Activity {
 			txt = ""+memValue;
 		//else	txt = tv.getText().toString()+ memValue;
 		tv.setText(txt);
+		flag3=false;
+		
     }
 	public void clear(View v)
     {
@@ -462,33 +509,35 @@ public class CalculatorActivity extends Activity {
 
     }
 	public void goNext(View v)
-    {		
-		String ret = "";
-		StringBuilder txt = new StringBuilder();
-        try {
-            InputStream inputStream = openFileInput("history.txt");
-             
-            if ( inputStream != null ) {
-                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-                String receiveString = "";
-                StringBuilder stringBuilder = new StringBuilder();
-                while ( (receiveString = bufferedReader.readLine()) != null ) {
-                    stringBuilder.append(receiveString);
-                }
-                inputStream.close();
-                ret = stringBuilder.toString();
-            }
-        }
-        catch (FileNotFoundException e) {
-        	e.printStackTrace();
-        } catch (IOException e) {
-        	e.printStackTrace();
-        }
-
-    	String s = ret;
+    {		StringBuilder text = new StringBuilder();
+    
+    try
+	{
+		InputStream instream = openFileInput("Text.txt");
+           
+        if (instream != null) 
+		{
+			InputStreamReader inputreader = new InputStreamReader(instream);
+			BufferedReader buffreader = new BufferedReader(inputreader, 8000);
+              
+			String line=null;
+			//We initialize a string "line" 
+            
+			while (( line = buffreader.readLine()) != null)
+			{
+				text.append(line + "\n");                                         
+			}
+		}
+        //tv.setText(text.toString());
+        Log.d("a", "Read Done");
+	}
+    catch(Exception e)
+    {
+    	Toast.makeText(this, "Read Exception", Toast.LENGTH_SHORT);
+		Log.d("a", "Read Excption");
+    }
     	Intent in = new Intent(this, history.class);
-    	in.putExtra("displayMsg", s);
+    	in.putExtra("Intent", text.toString());
     	startActivity(in);
     }
 	public void equal()
@@ -506,17 +555,39 @@ public class CalculatorActivity extends Activity {
     		ans = (int)answer;
     		tv.setText(""+ans);
     		}
-    	else	tv.setText(""+answer);
-    	history = history+" = "+answer;
-    	flag2=true;
-    	try {
-    	    outputStream = openFileOutput("history.txt", Context.MODE_APPEND);
-    	    outputStream.write(history.getBytes());
-    	    outputStream.close();
-    	} catch (Exception e) {
-    	    e.printStackTrace();
+	    	else	tv.setText(""+answer);
+	    	history = history+" = "+answer;
+	    	flag2=true;
+	    	Date c = Calendar.getInstance().getTime();
+	    	SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+	    	String formattedDate = df.format(c);
+    	try
+    	{
+    		OutputStreamWriter out=new OutputStreamWriter(openFileOutput("Text.txt",MODE_APPEND));
+    		String s = formattedDate+"\n"+ history+"\n";
+    		out.write(s);
+    		out.close();	
     	}
-    	
-    	
+    	catch(Exception e)
+    	{
+    	}
+	}
+	@Override
+	public void onSaveInstanceState(Bundle savedInstanceState) {
+
+	  savedInstanceState.putString("MyString", tv.getText().toString());  
+
+	  super.onSaveInstanceState(savedInstanceState);  
+	}  
+
+	//onRestoreInstanceState  
+
+	@Override  
+	public void onRestoreInstanceState(Bundle savedInstanceState) {  
+
+	  super.onRestoreInstanceState(savedInstanceState);  
+
+	  String myString = savedInstanceState.getString("MyString"); 
+	  tv.setText(myString);
 	}
 }
