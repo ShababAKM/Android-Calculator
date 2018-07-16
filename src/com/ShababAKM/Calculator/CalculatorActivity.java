@@ -25,11 +25,12 @@ import android.widget.Toast;
 public class CalculatorActivity extends Activity {
     /** Called when the activity is first created. */
 	private Button bt0,bt1,bt2,bt3,bt4,bt5,bt6,bt7,bt8,bt9,btm,btp,btmu,btd,btc,btbs,bteq,btdo,btmp,btmr,btmc,btmi,btpr,bth,btmm;
-	private TextView tv,tvl;
+	private TextView tv;
 	private boolean flag = true,flag2 = false,flag3=true,flag4;
 	SharedPreferences sharedPref;
 	FileOutputStream outputStream;
-	static String ope,exp,str;
+	static String ope,str;
+	static double exp;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -368,14 +369,14 @@ public class CalculatorActivity extends Activity {
             if (operator == '*') {
                 leftVal = leftVal * rightVal;
                 ope = "*";
-                exp = ""+rightVal;
+                exp = rightVal;
                 
             } 
             
             else {
                 leftVal = leftVal / rightVal;
                 ope = "/";
-                exp = ""+rightVal;
+                exp = rightVal;
             }
             if (expression.length() > 0) {
                 operator = expression.charAt(0);
@@ -397,10 +398,13 @@ public class CalculatorActivity extends Activity {
         }
         if (operator == '+') {
             
-            return leftVal + calc(expression);
+        	exp = calc(expression);
+        	ope="+";
+            return leftVal + exp;
         } else {
-        	
-            return leftVal - calc(expression);
+        	exp = calc(expression);
+        	ope="-";
+            return leftVal - exp;
         }
     }
     private static double getNextOperand(String[] exp){
@@ -549,7 +553,7 @@ public class CalculatorActivity extends Activity {
     	answer = calc(str);
     	int ans;
     	if(flag2==true)
-    		answer=answer+answer;
+    		answer=calc(""+answer+ope+exp);
     	if(answer%1==0)
     		{
     		ans = (int)answer;
@@ -575,7 +579,8 @@ public class CalculatorActivity extends Activity {
 	@Override
 	public void onSaveInstanceState(Bundle savedInstanceState) {
 
-	  savedInstanceState.putString("MyString", tv.getText().toString());  
+	  savedInstanceState.putString("MyString", tv.getText().toString());
+	  savedInstanceState.putBoolean("myBool", flag);
 
 	  super.onSaveInstanceState(savedInstanceState);  
 	}  
@@ -588,6 +593,7 @@ public class CalculatorActivity extends Activity {
 	  super.onRestoreInstanceState(savedInstanceState);  
 
 	  String myString = savedInstanceState.getString("MyString"); 
+	  flag = savedInstanceState.getBoolean("myBool");
 	  tv.setText(myString);
 	}
 }
