@@ -23,7 +23,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class CalculatorActivity extends Activity {
-    /** Called when the activity is first created. */
 	private Button bt0,bt1,bt2,bt3,bt4,bt5,bt6,bt7,bt8,bt9,btm,btp,btmu,btd,btc,btbs,bteq,btdo,btmp,btmr,btmc,btmi,btpr,bth,btmm;
 	private TextView tv;
 	private boolean flag = true,flag2 = false,flag3=true,flag4;
@@ -192,8 +191,6 @@ public class CalculatorActivity extends Activity {
             	{
             		String txt = tv.getText().toString()+ btpr.getText().toString();
              		tv.setText(txt);
-             		//flag = true;
-             		//flag2 = false;
             	}
             	flag3=true;
          	}
@@ -225,8 +222,6 @@ public class CalculatorActivity extends Activity {
              		flag = false;
              		flag2 = false;
             	}
-            	
-            	
          	}
           });
        
@@ -241,12 +236,37 @@ public class CalculatorActivity extends Activity {
             public void onClick(View v)
          	{
             	flag4=true;
+            	/*String eq = tv.getText().toString();
+            	if(eq.charAt(eq.length() - 1)=='+'||eq.charAt(eq.length() - 1)=='-'||eq.charAt(eq.length() - 1)=='*'||eq.charAt(eq.length() - 1)=='/')
+            	{
+            		 eq.replace(eq.substring(eq.length()-1), "");
+            	}
+            	double ans = calc(eq);
+            	int ans2;
+            	if(ans%1==0)
+            	{
+            		ans2=(int)ans;
+            		tv.setText(Integer.toString(ans2));
+            	}
+            	else tv.setText(Double.toString(ans));
+            	//System.out.println(ans);
+            	
+            	//String set = Double.toString(ans);
+            	if(tv.getText().toString()!="0")
+            		writeInMemory(tv.getText().toString());*/
             	if(tv.getText().toString()!="0")
             		writeInMemory(tv.getText().toString());
-            	
+          
          	}
           });
-        
+        btmm.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v)
+         	{
+            	flag4=false;
+            	if(tv.getText().toString()!="0")
+            		writeInMemory(tv.getText().toString());
+         	}
+          });
         btmr.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
          	{
@@ -259,15 +279,6 @@ public class CalculatorActivity extends Activity {
             	writeInMemory("0");
          	}
           });
-        btmm.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v)
-         	{
-            	flag4=false;
-            	if(tv.getText().toString()!="0")
-            		writeInMemory(tv.getText().toString());
-         	}
-          });
-        
         bteq.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
          	{
@@ -278,6 +289,7 @@ public class CalculatorActivity extends Activity {
         public void onClick(View v)
      	{
      		String txt = "0";
+     		exp=0;
      		tv.setText(txt);
      	}
       });
@@ -289,70 +301,56 @@ public class CalculatorActivity extends Activity {
             	//char c = str.charAt(str.length() - 1);
             	if(str.length()-1>0)
             	{
-            		String txt = str.substring(0, str.length() - 1);
-            		
+            		String txt = str.substring(0, str.length() - 1);            		
             		if(str.charAt(str.length() - 1)=='.')
             			flag = true;
                  	tv.setText(txt);
+                 	exp=0;
             	}
             	else tv.setText("0");
          	}
           });
     }
-
 	@Override
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
 	}
-
 	@Override
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
 	}
-
 	@Override
 	protected void onRestart() {
 		// TODO Auto-generated method stub
 		super.onRestart();
 	}
-
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
 	}
-
 	@Override
 	protected void onStart() {
 		// TODO Auto-generated method stub}
 		super.onStart();
 	}
-
 	@Override
 	protected void onStop() {
 		// TODO Auto-generated method stub
 		super.onStop();
 	}
-	/*public void onsClick(View v)
-	{
-		String txt = tv.getText().toString()+ bt.getText().toString();
-		tv.setText(txt);
-	}*/
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 	    // TODO Auto-generated method stub
 	    super.onConfigurationChanged(newConfig);
 	}
-
     public static Double calc(String expression) {
-
         if (expression.startsWith("(") && expression.endsWith(")")) {
             return calc(expression.substring(1, expression.length() - 1));
         }
         int len = expression.length() - 1;
-        
         String[] containerArr = new String[]{expression};
         double leftVal = getNextOperand(containerArr);
         expression = containerArr[0];
@@ -361,7 +359,6 @@ public class CalculatorActivity extends Activity {
         }
         char operator = expression.charAt(0);
         expression = expression.substring(1);
-
         while (operator == '*' || operator == '/') {
             containerArr[0] = expression;
             double rightVal = getNextOperand(containerArr);
@@ -369,8 +366,7 @@ public class CalculatorActivity extends Activity {
             if (operator == '*') {
                 leftVal = leftVal * rightVal;
                 ope = "*";
-                exp = rightVal;
-                
+                exp = rightVal; 
             } 
             
             else {
@@ -451,17 +447,35 @@ public class CalculatorActivity extends Activity {
 		flag2 = false;}
 		else{
 			String txt;
-				txt =  str;
+			txt =  str;
 			tv.setText(txt);
 			flag2 = false;
 			flag3=true;
 			}
 		}
-
 	public void writeInMemory(String v)
     {int vi;
     	try{
     		if(v!="0" && flag4==true){
+    			/*String eq = tv.getText().toString();
+            	if(eq.charAt(eq.length() - 1)=='+'||eq.charAt(eq.length() - 1)=='-'||eq.charAt(eq.length() - 1)=='*'||eq.charAt(eq.length() - 1)=='/')
+            	{
+            		 eq.replace(eq.substring(eq.length()-1), "");
+            	}
+            	double ans = calc(eq);
+            	int ans2;
+            	if(ans%1==0)
+            	{
+            		ans2=(int)ans;
+            		tv.setText(Integer.toString(ans2));
+            	}
+            	else tv.setText(Double.toString(ans));
+            	//System.out.println(ans);
+            	
+            	//String set = Double.toString(ans);
+            	if(tv.getText().toString()!="0")
+            		writeInMemory(tv.getText().toString());*/
+    			
     		sharedPref = this.getPreferences(Context.MODE_PRIVATE);
 	    	int defaultValue = 0;
 	    	int memValue = sharedPref.getInt("memory", defaultValue);
@@ -471,7 +485,6 @@ public class CalculatorActivity extends Activity {
         		sharedPref = this.getPreferences(Context.MODE_PRIVATE);
     	    	int defaultValue = 0;
     	    	int memValue = sharedPref.getInt("memory", defaultValue);
-        		
         		vi = memValue-Integer.parseInt(v);}
     		else vi=0;
 	    	sharedPref = this.getPreferences(Context.MODE_PRIVATE);
@@ -498,41 +511,31 @@ public class CalculatorActivity extends Activity {
     {
 		int memValue = readFromMemory();
     	String txt;
-		//if(tv.getText().toString()=="0")
-			txt = ""+memValue;
-		//else	txt = tv.getText().toString()+ memValue;
+		txt = ""+memValue;
 		tv.setText(txt);
-		flag3=false;
-		
+		flag3=false;	
     }
 	public void clear(View v)
     {
     	String value="0";
     	writeInMemory(value);
     	Toast.makeText(this,"cleared", Toast.LENGTH_SHORT);
-
     }
 	public void goNext(View v)
-    {		StringBuilder text = new StringBuilder();
-    
+    {StringBuilder text = new StringBuilder();
     try
 	{
 		InputStream instream = openFileInput("Text.txt");
-           
         if (instream != null) 
 		{
 			InputStreamReader inputreader = new InputStreamReader(instream);
 			BufferedReader buffreader = new BufferedReader(inputreader, 8000);
-              
 			String line=null;
-			//We initialize a string "line" 
-            
 			while (( line = buffreader.readLine()) != null)
 			{
 				text.append(line + "\n");                                         
 			}
 		}
-        //tv.setText(text.toString());
         Log.d("a", "Read Done");
 	}
     catch(Exception e)
@@ -546,54 +549,55 @@ public class CalculatorActivity extends Activity {
     }
 	public void equal()
 	{
-		String history;
-    	double answer = 0;
-    	String str = tv.getText().toString();
-    	history = str;
-    	answer = calc(str);
-    	int ans;
-    	if(flag2==true)
-    		answer=calc(""+answer+ope+exp);
-    	if(answer%1==0)
-    		{
-    		ans = (int)answer;
-    		tv.setText(""+ans);
-    		}
-	    	else	tv.setText(""+answer);
-	    	history = history+" = "+answer;
-	    	flag2=true;
-	    	Date c = Calendar.getInstance().getTime();
-	    	SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-	    	String formattedDate = df.format(c);
-    	try
-    	{
-    		OutputStreamWriter out=new OutputStreamWriter(openFileOutput("Text.txt",MODE_APPEND));
-    		String s = formattedDate+"\n"+ history+"\n";
-    		out.write(s);
-    		out.close();	
-    	}
-    	catch(Exception e)
-    	{
-    	}
+		String st = tv.getText().toString();
+		if(st.charAt(st.length() - 1)!='+' && st.charAt(st.length() - 1)!='-' && st.charAt(st.length() - 1)!='*' && st.charAt(st.length() - 1)!='/' && st!="0")
+		{
+			String history;
+	    	double answer = 0;
+	    	String str = tv.getText().toString();
+	    	history = str;
+	    	answer = calc(str);
+	    	int ans;
+	    	if(flag2==true && exp!=0)
+	    		answer=calc(""+answer+ope+exp);
+	    	if(answer%1==0)
+	    		{
+	    		ans = (int)answer;
+	    		tv.setText(""+ans);
+	    		}
+		    	else	tv.setText(""+answer);
+		    	history = history+" = "+answer;
+		    	flag2=true;
+		    	Date c = Calendar.getInstance().getTime();
+		    	SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+		    	String formattedDate = df.format(c);
+	    	try
+	    	{
+	    		OutputStreamWriter out=new OutputStreamWriter(openFileOutput("Text.txt",MODE_APPEND));
+	    		String s = formattedDate+"\n"+ history+"\n";
+	    		out.write(s);
+	    		out.close();	
+	    	}
+	    	catch(Exception e)
+	    	{}
+		}
 	}
 	@Override
 	public void onSaveInstanceState(Bundle savedInstanceState) {
 
 	  savedInstanceState.putString("MyString", tv.getText().toString());
 	  savedInstanceState.putBoolean("myBool", flag);
-
 	  super.onSaveInstanceState(savedInstanceState);  
 	}  
-
-	//onRestoreInstanceState  
-
 	@Override  
 	public void onRestoreInstanceState(Bundle savedInstanceState) {  
-
 	  super.onRestoreInstanceState(savedInstanceState);  
-
 	  String myString = savedInstanceState.getString("MyString"); 
 	  flag = savedInstanceState.getBoolean("myBool");
 	  tv.setText(myString);
+	}
+	public void writeM()
+	{
+		writeInMemory(tv.getText().toString());
 	}
 }
